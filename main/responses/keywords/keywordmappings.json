@@ -17,7 +17,7 @@
     ],
 	"id": 1,
 	"similarTo": [0],
-	"priority": 10
+	"priority": 2
   },
   
   {
@@ -34,7 +34,7 @@
 	"priority": 9
   },
   {
-  	"keywords": ["sehr gut", "schönes ding", "gut gemacht"],
+  	"keywords": ["sehr gut", "schönes ding", "gut gemacht", "gute arbeit", "guter job"],
   	"responses": [
   	  "Das freut mich.",
 	  "Sehr freundlich.",
@@ -58,20 +58,35 @@
   	"similarTo": [3,2],
 	"priority": 7
   },
-  
+
   {
 	"keywords": ["schlechter bot", "schlechte bot", "schlechten bot", "schlechtes bot", "schlecht bot",
-				"schlechter rob", "schlechte rob", "schlechten rob", "sclhechtes rob", "schlecht rob",
-				"schlecht gemacht", "schlechte Arbeit", "mieser Job"],
+				"schlechter rob", "schlechte rob", "schlechten rob", "schlechtes rob", "schlecht rob",
+				"schlecht gemacht", "schlechte arbeit", "mieser job"],
 	"responses": [
 	  "Komm 1gegen1 auf Gomme.",
 	  "Machs besser.",
+	  "Auer.",
 	  "):",
 	  "Verbesserungsvorschläge nehme ich gerne an, du kannst sie mir schreiben oder bei meinem [Github](https://github.com/Smurflurf/reddit-pixel-bot) einreichen.",
-	  "Niemand ist perfekt."
+	  "Niemand ist perfekt.",
+	  "Ich gebe mein bestes.", 
+	  "Pass auf dein Ford Focus auf."
 	],
 	"id": 5,
-	"similarTo": [0,1,2,3,4],
-	"priority": 0
-  }
+	"similarTo": [0,1,2,3,4,6],
+	"priority": 1
+  },
+  {
+  	"keywords": ["kein schlechter bot", "keine schlechte bot", "keine schlechten bot", "kein schlechtes bot", "kein schlecht bot",
+  				"kein schlechter rob", "keine schlechte rob", "keine schlechten rob", "kein schlechtes rob", "kein schlecht rob"
+				],
+  	"responses": [
+  	  "Danke.",
+	  "Ich gebe mein bestes."
+  	],
+  	"id": 6,
+  	"similarTo": [5],
+  	"priority": 0
+    }
 ]
