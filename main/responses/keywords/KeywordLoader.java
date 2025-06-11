@@ -14,11 +14,21 @@ import com.google.gson.reflect.TypeToken;
 
 import lombok.Data;
 
+/**
+ * Loads the keyword-reply mappings, contains the Map class and useful methods for interacting with it.
+ */
 public class KeywordLoader {
 	private static String keywordFileName = "keywordmappings.json";
 	private static List<ResponseMapping> responses = loadResponses();
 	private static Set<String> keywords = collectKeywords();
 	
+	public static ResponseMapping getMapping(int id) {
+		for(ResponseMapping mapping : responses) {
+			if(mapping.getId() == id)
+				return mapping;
+		}
+		return null;
+	}
 	
 	public static List<ResponseMapping> getMappings() {
 		return responses;
@@ -51,15 +61,35 @@ public class KeywordLoader {
 		private static SplittableRandom random = new SplittableRandom();
 		private List<String> keywords;
 		private List<String> responses;
+		private int id;
+		private int priority;
+		private List<Integer> similarTo;
+		
+		/**
+		 * If other appears in {@link #similarTo}, the ResponseMapping with smaller (meaning higher) priority gets returned.
+		 * @param other 
+		 * @return stronger ResponseMapping or null if they are not similar.
+		 */
+		public ResponseMapping getStronger(ResponseMapping other) {
+			if(other.getSimilarTo().contains(id)) {
+				if(other.getPriority() > priority)
+					return this;
+				else if(other.getPriority() <= priority)
+					return other;
+			}
+			
+			return null;
+		}
 		
 		public String randomResponse() {
 			return responses.get(random.nextInt(responses.size()));
 		}
 		
 		public boolean appearsIn(String commentBody) {
-			for(String key : keywords)
+			for(String key : keywords) {
 				if(commentBody.contains(key))
 					return true;
+			}
 			return false;
 		}
 	}

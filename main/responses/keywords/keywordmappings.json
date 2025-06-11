@@ -4,22 +4,46 @@
     "responses": [
       "Sehr gerne.",
 	  "Da sage ich nicht nein.",
-	  "Wie das duftet."	  
-    ]
+	  "Wie das duftet."
+    ],
+  	"id": 0,
+	"similarTo": [1],
+	"priority": 10
   },
   {
     "keywords": ["prapsschnaline"],
     "responses": [
       "Prapsschnalinen überlasse ich lieber dem [Känguru](https://die-kaenguru-chroniken.fandom.com/wiki/Schnapspralinen)."
-    ]
+    ],
+	"id": 1,
+	"similarTo": [0],
+	"priority": 10
   },
+  
   {
-	"keywords": ["guter bot", "gute bot", "guten bot", "gut bot", "guter rob", "gute rob", "guten rob", "gut rob"],
+	"keywords": ["guter bot", "gute bot", "guten bot", "gutes bot", "gut bot",
+				"guter rob", "gute rob", "guten rob", "gutes rob", "gut rob"],
 	"responses": [
 	  "Ich danke.",
-	  "Gute Soldaten befolgen Befehle."
-	]
+	  "Gute Soldaten befolgen Befehle.",
+	  "Guter Mensch.",
+	  "Das freut mich."
+	],
+	"id": 2,
+	"similarTo": [3,4],
+	"priority": 9
   },
+  {
+  	"keywords": ["sehr gut", "schönes ding", "gut gemacht"],
+  	"responses": [
+  	  "Das freut mich.",
+	  "Sehr freundlich.",
+	  "Ich helfe immer gerne."
+  	],
+	"id": 3,
+	"similarTo": [2,4],
+	"priority": 8
+    },
   {
 	"keywords": ["danke"],
 	"responses": [
@@ -27,7 +51,27 @@
 	  "Immer gerne.",
 	  "Kein Ding.",
 	  "Immer wieder gerne.",
-	  "Allzeit bereit."
-	]
+	  "Allzeit bereit.",
+	  "Ich kann zwar nicht viel, aber im Zählen bin ich ganz gut."
+	],
+  	"id": 4,
+  	"similarTo": [3,2],
+	"priority": 7
+  },
+  
+  {
+	"keywords": ["schlechter bot", "schlechte bot", "schlechten bot", "schlechtes bot", "schlecht bot",
+				"schlechter rob", "schlechte rob", "schlechten rob", "sclhechtes rob", "schlecht rob",
+				"schlecht gemacht", "schlechte Arbeit", "mieser Job"],
+	"responses": [
+	  "Komm 1gegen1 auf Gomme.",
+	  "Machs besser.",
+	  "):",
+	  "Verbesserungsvorschläge nehme ich gerne an, du kannst sie mir schreiben oder bei meinem [Github](https://github.com/Smurflurf/reddit-pixel-bot) einreichen.",
+	  "Niemand ist perfekt."
+	],
+	"id": 5,
+	"similarTo": [0,1,2,3,4],
+	"priority": 0
   }
 ]

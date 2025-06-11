@@ -34,12 +34,21 @@ public class VideoResponse {
 		if(fps > 0) {
 			sb.append("\nBei ")
 			.append(fps)
-			.append(" bps sind das ")
+			.append(" bps und einer Länge von ")
+			.append(
+					germanFormat.format(
+							Math.round(
+									(video.getDuration() * 1000)
+									) / 1000
+							)
+					)
+			.append("s sind das ")
 			.append(
 					germanFormat.format(
 							BigDecimal.valueOf(video.getWidth())
 							.multiply(BigDecimal.valueOf(video.getHeight()))
 							.multiply(BigDecimal.valueOf(fps))
+							.multiply(BigDecimal.valueOf(video.getDuration()))
 							.longValue()
 							)
 					)
