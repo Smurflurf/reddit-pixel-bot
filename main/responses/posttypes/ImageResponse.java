@@ -12,9 +12,13 @@ public class ImageResponse {
 	static NumberFormat germanFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
 	
 	public static void execute(RedditComment parent, RedditImage image) {
-		String reply = countPixels(parent, image);
+		String reply = "";
+		if(image != null)
+			reply = countPixels(parent, image);
 		reply += "  \n" + KeywordAnalyser.build(parent);
-		Reddit5J.comment(parent, reply);
+		
+		if(reply.length() > 0)
+			Reddit5J.comment(parent, reply);
 	}
 
 	static String countPixels(RedditComment parent, RedditImage image) {

@@ -15,9 +15,10 @@ public class Main extends Reddit5J {
 			Credentials.PASSWORD.set(args[1]);
 			Credentials.CLIENT_ID.set(args[2]);
 			Credentials.CLIENT_SECRET.set(args[3]);
+			Credentials.GEMINI_API_KEY.set(args[4]);
 		}
 
-		System.out.println("running silently...");
+		System.out.println("running silently....");
 		
 		while(true) {
 			try {

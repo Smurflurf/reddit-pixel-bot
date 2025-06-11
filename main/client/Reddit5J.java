@@ -69,7 +69,7 @@ public class Reddit5J extends Reddit4J {
 	        if (jsonResponse.has("json") && jsonResponse.getAsJsonObject("json").has("errors")) {
 	            JsonArray errors = jsonResponse.getAsJsonObject("json").getAsJsonArray("errors");
 	            if (errors.size() > 0) {
-	                System.err.println("Error commenting: " + errors.get(0).getAsString());
+	                System.err.println("Error commenting: " + comment);
 	                return false;
 	            }
 	        }

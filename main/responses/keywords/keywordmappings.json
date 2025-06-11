@@ -2,7 +2,7 @@
   {
     "keywords": ["schnapspraline"],
     "responses": [
-      "Sehr gerne.",
+      "Her damit!",
 	  "Da sage ich nicht nein.",
 	  "Wie das duftet."
     ],
@@ -11,9 +11,9 @@
 	"priority": 10
   },
   {
-    "keywords": ["prapsschnaline"],
+    "keywords": ["prapsschnaline", "prapsschnalline", "prapschnaline", "prapsschnalle"],
     "responses": [
-      "Prapsschnalinen überlasse ich lieber dem [Känguru](https://die-kaenguru-chroniken.fandom.com/wiki/Schnapspralinen)."
+      "Prapsschnalinen überlasse ich lieber dem Känguru."
     ],
 	"id": 1,
 	"similarTo": [0],
@@ -25,9 +25,9 @@
 				"guter rob", "gute rob", "guten rob", "gutes rob", "gut rob"],
 	"responses": [
 	  "Ich danke.",
-	  "Gute Soldaten befolgen Befehle.",
 	  "Guter Mensch.",
-	  "Das freut mich."
+	  "Das freut mich.",
+	  "Löbliches Lob."
 	],
 	"id": 2,
 	"similarTo": [3,4],
@@ -60,7 +60,9 @@
   },
 
   {
-	"keywords": ["schlechter bot", "schlechte bot", "schlechten bot", "schlechtes bot", "schlecht bot",
+	"keywords": [	"kein guter bot", "keine gute bot", "keinen guten bot", "kein gutes bot", "nicht gut bot",
+					"kein guter rob", "keine gute rob", "keinen guten rob", "kein gutes rob", "nicht gut rob",
+					"schlechter bot", "schlechte bot", "schlechten bot", "schlechtes bot", "schlecht bot",
 				"schlechter rob", "schlechte rob", "schlechten rob", "schlechtes rob", "schlecht rob",
 				"schlecht gemacht", "schlechte arbeit", "mieser job"],
 	"responses": [
