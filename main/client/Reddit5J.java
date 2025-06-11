@@ -7,10 +7,12 @@ import java.util.Base64;
 import java.util.Optional;
 
 import org.jsoup.Connection;
+import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +22,7 @@ import masecla.reddit4j.exceptions.AuthenticationException;
 import masecla.reddit4j.objects.RedditComment;
 import masecla.reddit4j.objects.RedditData;
 import masecla.reddit4j.objects.RedditListing;
-import masecla.reddit4j.objects.RedditThing;
+import masecla.reddit4j.objects.RedditPost;
 
 /**
  * Eine erweiterte Version von Reddit4J, die das Anfordern von OAuth2-Scopes
@@ -28,6 +30,72 @@ import masecla.reddit4j.objects.RedditThing;
  * Dies wird durch Vererbung und Java Reflection erreicht.
  */
 public class Reddit5J extends Reddit4J {
+	/**
+	 * Marks a comment as read
+	 * @param comment
+	 * @return true if executed without errors.
+	 */
+	public static boolean markAsRead(RedditComment comment) {
+		Connection conn = ClientHandler.getClient().useEndpoint("/api/read_message").method(Method.POST);
+	    conn.data("id", comment.getName());
+	    try {
+			conn.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	    return true;
+	}
+
+	/**
+	 * Comments comment below parent.
+	 * Marks the comment as read, if answered without errors.
+	 * @param parent
+	 * @param comment
+	 * @return
+	 */
+	public static boolean comment(RedditComment parent, String comment) {
+		Connection connection = ClientHandler.getClient().useEndpoint("/api/comment")
+                .method(Connection.Method.POST)
+                .data("thing_id", parent.getName())
+                .data("text", comment)
+                .data("api_type", "json");
+		
+		try {
+			Response response = connection.execute();
+			
+			String responseBody = response.body();
+			JsonObject jsonResponse = JsonParser.parseString(responseBody).getAsJsonObject();
+	        if (jsonResponse.has("json") && jsonResponse.getAsJsonObject("json").has("errors")) {
+	            JsonArray errors = jsonResponse.getAsJsonObject("json").getAsJsonArray("errors");
+	            if (errors.size() > 0) {
+	                System.err.println("Error commenting: " + errors.get(0).getAsString());
+	                return false;
+	            }
+	        }
+	        return markAsRead(parent);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns the parent post a comment was published below.
+	 * @param comment to get parent post
+	 * @return parent post of comment
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static RedditPost getParentPost(RedditComment comment) throws IOException, InterruptedException {
+		RedditComment copy = comment;
+		while(copy.getParentId().contains("t1")) {
+			String fullName = copy.getParentId();
+			copy = Reddit5J.getCommentByName(ClientHandler.getClient(), fullName).get();
+		}
+		return ClientHandler.getClient().getPost(copy.getParentId()).get();
+	}
+	
 	/**
 	 * Connects the client to reddit and requests the in Credentials.java set OAuth2-Scopes.
 	 *
@@ -95,10 +163,6 @@ public class Reddit5J extends Reddit4J {
 	    return fromJson.getData().getChildren().stream()
 	            .findFirst()
 	            .map(RedditData::getData);
-	}
-	
-	public static RedditThing getThingByID(String id) {
-		return null;
 	}
 
 	/**

@@ -1,0 +1,33 @@
+[
+  {
+    "keywords": ["schnapspraline"],
+    "responses": [
+      "Sehr gerne.",
+	  "Da sage ich nicht nein.",
+	  "Wie das duftet."	  
+    ]
+  },
+  {
+    "keywords": ["prapsschnaline"],
+    "responses": [
+      "Prapsschnalinen überlasse ich lieber dem [Känguru](https://die-kaenguru-chroniken.fandom.com/wiki/Schnapspralinen)."
+    ]
+  },
+  {
+	"keywords": ["guter bot", "gute bot", "guten bot", "gut bot", "guter rob", "gute rob", "guten rob", "gut rob"],
+	"responses": [
+	  "Ich danke.",
+	  "Gute Soldaten befolgen Befehle."
+	]
+  },
+  {
+	"keywords": ["danke"],
+	"responses": [
+	  "Keine Ursache.",
+	  "Immer gerne.",
+	  "Kein Ding.",
+	  "Immer wieder gerne.",
+	  "Allzeit bereit."
+	]
+  }
+]
