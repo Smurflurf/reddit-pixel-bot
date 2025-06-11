@@ -12,4 +12,4 @@ Replace Username and Password in `Credentials.java` with your own and create Cli
 Create a [Gemini API key](https://aistudio.google.com/apikey) to use Gemini answer refinment. Currently this is always enabled.  
 
 ## mentions 
-This project builds upon [Reddit4J](https://github.com/masecla22/Reddit4J) and uses (Google Gen AI Java SDK)[https://github.com/googleapis/java-genai] to access Gemma.
+This project builds upon [Reddit4J](https://github.com/masecla22/Reddit4J) and uses [Google Gen AI Java SDK](https://github.com/googleapis/java-genai) to access Gemma.
