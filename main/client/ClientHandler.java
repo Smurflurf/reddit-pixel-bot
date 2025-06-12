@@ -9,7 +9,6 @@ import masecla.reddit4j.requests.RedditUserCommentListingEndpointRequest;
 public class ClientHandler {
 	private static Reddit4J client = getConnectedClient();
 
-
 	public static RedditUserCommentListingEndpointRequest getUnreadMentionRequest() {
 		return new RedditUserCommentListingEndpointRequest("/message/unread", client);
 	}

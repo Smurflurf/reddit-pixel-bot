@@ -12,15 +12,16 @@ import responses.keywords.KeywordAnalyser;
 public class VideoResponse {
 	static NumberFormat germanFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
 
-	public static void execute(RedditComment parent, RedditVideo video) {
-		String reply = lookAtBandwidth(parent, video);
+	public static void execute(RedditComment parent, RedditVideo video, boolean isLink) {
+		String reply = lookAtBandwidth(parent, video, isLink);
 		reply += "  \n" + KeywordAnalyser.build(parent);
+		
 		Reddit5J.comment(parent, reply);
 	}
 	
-	static String lookAtBandwidth(RedditComment parent, RedditVideo video) {
+	static String lookAtBandwidth(RedditComment parent, RedditVideo video, boolean isLink) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Das obrige Video hat ")
+		sb.append(isLink ? "Das oben kreuzpfostierte Video hat " : "Das obrige Video hat ")
 		.append(germanFormat.format((long) video.getWidth() * (long)video.getHeight()))
 		.append(" (")
 		.append((int)video.getWidth())
@@ -39,7 +40,7 @@ public class VideoResponse {
 					germanFormat.format(
 							Math.round(
 									(video.getDuration() * 1000)
-									) / 1000
+									) / 1000.
 							)
 					)
 			.append("s sind das ")

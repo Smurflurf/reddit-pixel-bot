@@ -1,5 +1,7 @@
 import java.io.IOException;
 
+import org.jsoup.HttpStatusException;
+
 import client.ClientHandler;
 import client.Credentials;
 import client.Reddit5J;
@@ -24,7 +26,14 @@ public class Main extends Reddit5J {
 			try {
 				mainLoop();
 				Thread.sleep((int)(3000));
-			} catch(IOException | InterruptedException | AuthenticationException e) {
+			} catch(InterruptedException | AuthenticationException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				if(e instanceof HttpStatusException 
+						&& (((HttpStatusException) e).getStatusCode() == 500)
+						|| (((HttpStatusException) e).getStatusCode() == 429))
+					continue;
+
 				e.printStackTrace();
 			}
 		}

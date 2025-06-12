@@ -1,4 +1,16 @@
 [
+	{
+	    "keywords": ["generic response"],
+	    "responses": [		
+		"Ich gebe mein bestes.",
+		"Verbesserungsvorschläge nehme ich gerne an, du kannst sie mir schreiben oder bei meinem [Github](https://github.com/Smurflurf/reddit-pixel-bot) einreichen.",
+		"Ich versuche zu helfen.",
+		"¯\\\\_(ツ)_/¯"
+	    ],
+	  	"id": -1,
+		"similarTo": [],
+		"priority": -1
+	},
   {
     "keywords": ["schnapspraline"],
     "responses": [
@@ -30,7 +42,7 @@
 	  "Löbliches Lob."
 	],
 	"id": 2,
-	"similarTo": [3,4],
+	"similarTo": [3,4,7],
 	"priority": 9
   },
   {
@@ -76,7 +88,7 @@
 	  "Pass auf dein Ford Focus auf."
 	],
 	"id": 5,
-	"similarTo": [0,1,2,3,4,6],
+	"similarTo": [0,1,2,3,4,6,7],
 	"priority": 1
   },
   {
@@ -88,7 +100,29 @@
 	  "Ich gebe mein bestes."
   	],
   	"id": 6,
-  	"similarTo": [5],
+  	"similarTo": [5,7],
+  	"priority": 0
+  },
+  {
+	"keywords": ["bot"],
+	"responses": [
+		"beep boop",
+		"boop beep",
+		"Stets zu diensten."
+	],
+	"id": 7,
+	"similarTo": [2,5,6],
+	"priority": 20
+  },
+  {
+  	"keywords": ["bitte"],
+  	"responses": [
+  		"Ich hörte dein Rufen und eilte herbei.",
+  		"Zum ",
+  		""
+		],
+  	"id": 8,
+  	"similarTo": [],
   	"priority": 0
     }
 ]

@@ -16,13 +16,14 @@ public class KeywordAnalyser {
 	public static SplittableRandom random = new SplittableRandom();
 
 	/**
-	 * Generates a reply to comment
+	 * Generates a reply to comment.
 	 * @param comment that will be replied to 
+	 * @param reasonForError Strings that will be added to the prompt, if present, prompt will be written to describe the Error
 	 * @return A valid comment, or, if no keywords got triggered, nothing.
 	 */
-	public static String build(RedditComment comment) {
+	public static String build(RedditComment comment, String ... reasonForError) {
 		String reply = "";
-		String body = comment.getBody().toLowerCase();
+		String body = comment.getBody().toLowerCase().replace(Credentials.USERNAME.get().toLowerCase(), "(my_username)");
 		List<ResponseMapping> validReplies = new ArrayList<ResponseMapping>();
 		List<String> buildingBlocks = new ArrayList<String>();
 
@@ -41,15 +42,56 @@ public class KeywordAnalyser {
 		} else if (buildingBlocks.size() == 1) {
 			reply = buildingBlocks.getFirst();
 		}
-		
-		if(!reply.isEmpty()) {
-			reply = checkAnswerContextBased(comment, reply);
-//			reply.replace(" Känguru", "[Känguru](https://die-kaenguru-chroniken.fandom.com/wiki/Schnapspralinen)");
+
+		if(reasonForError != null) {
+			reply = errorResponse(comment, reply, reasonForError);
 		}
-		
+
+		if(!reply.isEmpty() && reasonForError == null) {
+			reply = checkAnswerContextBased(comment, reply);
+			//			reply.replace(" Känguru", "[Känguru](https://die-kaenguru-chroniken.fandom.com/wiki/Schnapspralinen)");
+		}
+
 		return reply;
 	}
 
+	/**
+	 * Gives an error Response
+	 * @param comment
+	 * @param reply
+	 * @param reasonForError
+	 * @return
+	 */
+	private static String errorResponse(RedditComment comment, String reply, String ... reasonForError) {
+		StringBuffer knownKeywords = new StringBuffer();
+		if(!reply.isEmpty()) {
+			knownKeywords.
+			append("\" Hast du schon mit: \"")
+			.append(reply)
+			.append("\" geantwortet und alle Keywords die von mir identifiziert wurden korrekt in diese Antwort eingebunden. ")
+			.append("Deine folgende Antwort wird direkt hinter die eben genannte geschrieben. ")
+			.append("Sieh deine folgende Antwort also als Erweiterung und baue einen Übergang für flüssiges Lesen ein. ")
+			.append("Nutze Übergänge wie 'aber', 'jedoch', sofern sie dem Übergang behilflich sind.")
+			;
+		} else {
+			knownKeywords
+			.append("\" Sollst du nun antworten. ");
+		}
+		
+		StringBuilder prompt = new StringBuilder()
+				.append("Du bist ein reddit bot namens pixel-zaehl-boter. ")
+				.append("Du sollst auf den Kommentar eines Nutzers reagieren. ")
+				.append("Auf seinen Kommentar \"")
+				.append(comment.getBody())
+				.append(knownKeywords);
+
+
+		for(String req : reasonForError)
+			prompt.append(req).append(" ");
+
+		return askGemma(prompt.toString());
+	}
+	
 	/**
 	 * Checks if the generated reply is valid for comment.
 	 * In case that the reply does not fit the comment, it is assumed that something bad got commented and a bad response is chosen.
@@ -76,14 +118,14 @@ public class KeywordAnalyser {
 			if(answer.trim().equals("true")) {
 				return reply;
 			} else {
-				return KeywordLoader.getMapping(5).randomResponse();
+				return KeywordLoader.getMapping(-1).randomResponse();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return reply;
 		}
 	}
-	
+
 	/**
 	 * Glues different building blocks together, using {@link #model}.
 	 * @param comment parent comment
@@ -102,13 +144,13 @@ public class KeywordAnalyser {
 		}
 
 		StringBuilder prompt = new StringBuilder()
-				.append("Du bist ein reddit bot namens pixel-zaehl-boter. ")
+				.append("Du bist ein reddit Bot namens pixel-zaehl-boter und garantiert kein Mensch. ")
 				.append("Du sollst auf den Kommentar eines Nutzers reagieren. ")
 				.append("Auf seinen Kommentar \"")
 				.append(comment.getBody())
 				.append("\" antwortest du mit folgenden Bausteinen: ")
 				.append(blockList.toString())
-				
+
 				.append(" Deine Aufgabe ist es, auf den Bausteinen aufbauend eine flüssige und prägnante Antwort zu erstellen. ")
 				.append("Verändere die Bausteine so, dass sie zu einem oder zwei flüssig zusammenhängenden, kurzen Satz fusioniert werden. ")
 				.append("Die Satzteile sollen ineinander übergehen und flüssig lesbar sein. ")
@@ -117,16 +159,16 @@ public class KeywordAnalyser {
 				.append("Lege wert darauf die Bausteine in einen zusammenhängenden aber kurzen Satz zu fusionieren. ")
 				.append("Antworte sehr kurz, bündig, nicht formell und atomar. ")
 				.append("Schreibe immer aus erster Person aber referenziere dich nicht selbst. ")
-				.append("Schreibe nicht fabriziert sondern eher wie ein echter Redditor.")
+				.append("Schreibe nicht fabriziert sondern eher wie ein echter Redditor. ")
 				;
-				
+
 		try {
 			return askGemma(prompt.toString());
 		} catch (Exception e) {
 			return backup.toString();
 		}
 	}
-	
+
 	/**
 	 * Asks {@link #model} a prompt
 	 * @param prompt String to ask
@@ -153,10 +195,10 @@ public class KeywordAnalyser {
 	 */
 	private static void addToValid(List<ResponseMapping> validReplies, ResponseMapping newReply) {
 		List<ResponseMapping> remove = new ArrayList<ResponseMapping>();
-
+		
 		for(ResponseMapping mapping : validReplies) {
 			ResponseMapping stronger = mapping.getStronger(newReply);
-			if(stronger != null)
+			if(stronger != null) {
 				if(stronger == mapping) {
 					remove.clear();
 					newReply = null;
@@ -164,9 +206,10 @@ public class KeywordAnalyser {
 				} else {
 					remove.add(mapping);
 				}
-
+				System.out.println(stronger);
+			}
 		}
-
+		
 		for(ResponseMapping mapping : remove)
 			validReplies.remove(mapping);
 

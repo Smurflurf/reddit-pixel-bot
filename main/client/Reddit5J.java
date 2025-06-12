@@ -97,6 +97,57 @@ public class Reddit5J extends Reddit4J {
 	}
 	
 	/**
+	 * Gets a cross-posted post.
+	 */
+	public static RedditPost getOriginalPost(RedditPost old) throws IOException, InterruptedException {
+		String name = getJsonFromUrl(getUnshortedUrl(old.getUrl())).get("name").getAsString();
+		return ClientHandler.getClient().getPost(name).get();
+	}
+	
+	/**
+	 * Returns the long reddit url (not v.redd.it but the reddit.com/...)
+	 * @param url
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static String getUnshortedUrl(String url) throws IOException, InterruptedException {
+		return ClientHandler
+				.getClient()
+				.getHttpClient()
+				.execute(Jsoup.connect(url))
+				.url()
+				.toString();
+	}
+	
+	/**
+	 * Returns the JsonObject representing a post from a URL
+	 * @param url
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static JsonObject getJsonFromUrl(String url) throws IOException, InterruptedException {
+		Connection con = Jsoup.connect(url +"/.json")
+				.userAgent(ClientHandler.getClient().getHttpClient().getClass().getName())
+				.ignoreContentType(true)
+				.maxBodySize(0);
+		Response response = ClientHandler.getClient().getHttpClient().execute(con);
+		JsonArray array = JsonParser.parseString(response.body()).getAsJsonArray();
+		return array
+				.get(0)
+				.getAsJsonObject()
+				.get("data")
+				.getAsJsonObject()
+				.get("children")
+				.getAsJsonArray()
+				.get(0)
+				.getAsJsonObject()
+				.get("data")
+				.getAsJsonObject();
+	}
+	
+	/**
 	 * Connects the client to reddit and requests the in Credentials.java set OAuth2-Scopes.
 	 *
 	 * @throws IOException
