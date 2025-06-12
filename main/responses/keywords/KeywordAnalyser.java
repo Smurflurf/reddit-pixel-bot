@@ -43,11 +43,11 @@ public class KeywordAnalyser {
 			reply = buildingBlocks.getFirst();
 		}
 
-		if(reasonForError != null) {
+		if(reasonForError.length > 0) {
 			reply = errorResponse(comment, reply, reasonForError);
 		}
 
-		if(!reply.isEmpty() && reasonForError == null) {
+		if(!reply.isEmpty() && reasonForError.length == 0) {
 			reply = checkAnswerContextBased(comment, reply);
 			//			reply.replace(" Känguru", "[Känguru](https://die-kaenguru-chroniken.fandom.com/wiki/Schnapspralinen)");
 		}

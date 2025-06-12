@@ -20,7 +20,7 @@ public class Main extends Reddit5J {
 			Credentials.GEMINI_API_KEY.set(args[4]);
 		}
 
-		System.out.println("running silently....");
+		System.out.println("running silently..");
 		
 		while(true) {
 			try {

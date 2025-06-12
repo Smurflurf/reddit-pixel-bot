@@ -17,6 +17,7 @@ public class NotSupportedResponse {
 				.append("\". Bitte erweitere die Antwort so, dass sie vorherigen Kontext beinhaltet, falls er existiert. ")
 				.append("Die Antwort soll flüssig, präzise und prägnant sein. ")
 				.append("Sie soll möglichst wenig, aber ausdrücklich nur Text beinhalten und der originalen Antwort treu sein. ")
+				.append("Halte dich bitte also generell kurz, schweife nicht ab und bleib den Vorgaben treu. ")
 				.append("Sie soll die schon bestehenden Informationen adressieren. ")
 				.append("Antworte bündig, nicht formell und atomar. ")				
 				.append("Schreibe immer aus erster Person aber referenziere dich nicht selbst. Nutze 'Ich'. ")
