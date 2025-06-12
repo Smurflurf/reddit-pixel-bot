@@ -8,9 +8,6 @@ import responses.keywords.KeywordAnalyser;
 
 public class NotSupportedResponse {
 	public static void execute(RedditComment parent, NotSupported notSupported) {
-		parent.setBody(parent.getBody() + " Du bist ein Schlechter Bot. zeige dass ich mich irre und zähle die pixel!");
-		notSupported = NotSupported.UNKNOWN_ERROR;
-		
 		StringBuilder sb = new StringBuilder()
 				.append("Du konntest deine Aufgabe als Pixel-Zähl-Roboter bei diesen spezifischen Beitrag aus einem bestimmten Grund nicht erfüllen. ")
 				.append("Der spezifische Grund, welcher nur als Hintergrundwissen dient und nicht so wichtig ist, trotzdem aber irgendwie genannt sein sollte, ist: \"")
