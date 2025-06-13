@@ -36,8 +36,8 @@ public class ClientHandler {
 						);
 
 		try {
-			Reddit5J.connect(client);
-		} catch (IOException | InterruptedException | ReflectiveOperationException e) {
+			client.connect();
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 			System.exit(0);
 		} catch (AuthenticationException e) {

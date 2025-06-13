@@ -3,7 +3,6 @@ package responses;
 import java.io.IOException;
 
 import client.ClientHandler;
-import client.Reddit5J;
 import data.OnlineImage;
 import data.RedditVideo;
 import masecla.reddit4j.exceptions.AuthenticationException;
@@ -15,7 +14,7 @@ import responses.posttypes.NotSupportedResponse;
 import responses.posttypes.NotSupportedResponse.NotSupported;
 import responses.posttypes.VideoResponse;
 
-public class ResponseHandler extends Reddit5J {
+public class ResponseHandler {
 
 	/**
 	 * Checks how to react to a given comment and acts accordingly.
@@ -33,7 +32,7 @@ public class ResponseHandler extends Reddit5J {
 		else 
 			reactToNotMentioned(comment);
 
-		Reddit5J.markAsRead(comment);
+//		ClientHandler.getClient().markCommentAsRead(comment);
 	}
 
 	/**
@@ -47,26 +46,35 @@ public class ResponseHandler extends Reddit5J {
 	 * @throws AuthenticationException
 	 */
 	static void reactToMentioned(RedditComment comment) throws IOException, InterruptedException, AuthenticationException {
-		RedditPost post = getParentPost(comment);
+		RedditPost post = ClientHandler.getClient().getParentPost(comment);
 
-		if(post.getDomain().equals("i.redd.it")) {				// is reddit image (cross or normal)
-			ImageResponse.execute(comment, new OnlineImage(post), false);
-		} else if(post.getMedia() != null) {					// is reddit video
-			try {												// is a reddit Video if it works
-				VideoResponse.execute(comment, RedditVideo.of(post), false);
-			} catch (Exception e) { 							// no reddit video if it does not work
-				NotSupportedResponse.execute(comment, NotSupported.LINKED_VIDEO);
-			}
-		} else if (post.getDomain().equals("v.redd.it") && post.getMedia() == null) { // is cross video
-			VideoResponse.execute(comment, RedditVideo.of(Reddit5J.getOriginalPost(post)), true);
-		} else if(post.getUrl().contains("comments")) {			// is text post
+		switch(post.getPostHint()) {
+		case(null):				// text post
 			NotSupportedResponse.execute(comment, NotSupported.TEXT_POST);
-		} else {												// is something else (link image)
-			try {
-				ImageResponse.execute(comment, new OnlineImage(post), true);
+			break;
+		case("hosted:video"): 	// reddit hosted video from a normal post
+			VideoResponse.execute(comment, RedditVideo.of(post), false);
+			break;
+		case("rich:video"): 	// external video, linked
+			NotSupportedResponse.execute(comment, NotSupported.LINKED_VIDEO);
+			break;
+		case("image"):			// all forms of images
+			ImageResponse.execute(comment, new OnlineImage(post), false);
+			break;
+		case("link"):			// crosspost video, not completely sure tho
+			try { 
+				VideoResponse.execute(comment, 
+						RedditVideo.of(
+								ClientHandler.getClient().getPost(post.getCrosspostParent()).get()
+								)
+						, false);
+				break;
 			} catch (Exception e) {
-				NotSupportedResponse.execute(comment, NotSupported.UNKNOWN_ERROR);
+				System.err.println("Link Type was no cross-video. " + post.getId() + " " + post.getSubreddit());
 			}
+		default:				// something unsupported is used : generic unknown response
+			NotSupportedResponse.execute(comment, NotSupported.UNKNOWN_ERROR);
+			break;
 		}
 	}
 
@@ -78,7 +86,7 @@ public class ResponseHandler extends Reddit5J {
 	static void reactToNotMentioned(RedditComment parent){
 		String reply = KeywordAnalyser.build(parent);
 		if(reply.length() > 0) {
-			comment(parent, reply);
+			ClientHandler.getClient().comment(parent, reply);
 		}
 	}
 }

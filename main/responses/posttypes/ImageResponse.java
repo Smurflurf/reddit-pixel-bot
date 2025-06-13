@@ -3,7 +3,7 @@ package responses.posttypes;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import client.Reddit5J;
+import client.ClientHandler;
 import data.OnlineImage;
 import masecla.reddit4j.objects.RedditComment;
 import responses.keywords.KeywordAnalyser;
@@ -26,7 +26,7 @@ public class ImageResponse {
 		reply += "  \n" + KeywordAnalyser.build(parent);
 		
 		if(reply.length() > 0)
-			Reddit5J.comment(parent, reply);
+			ClientHandler.getClient().comment(parent, reply);
 	}
 
 	static String countPixels(RedditComment parent, OnlineImage image, boolean isLink) {

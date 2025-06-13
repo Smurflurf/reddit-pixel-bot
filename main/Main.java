@@ -4,12 +4,11 @@ import org.jsoup.HttpStatusException;
 
 import client.ClientHandler;
 import client.Credentials;
-import client.Reddit5J;
 import masecla.reddit4j.exceptions.AuthenticationException;
 import masecla.reddit4j.objects.RedditComment;
 import responses.ResponseHandler;
 
-public class Main extends Reddit5J {
+public class Main {
 
 	public static void main(String[] args) {
 		if(args.length > 0) {
@@ -20,12 +19,12 @@ public class Main extends Reddit5J {
 			Credentials.GEMINI_API_KEY.set(args[4]);
 		}
 
-		System.out.println("running silently..");
+		System.out.println("running silently...");
 		
 		while(true) {
 			try {
 				mainLoop();
-				Thread.sleep((int)(3000));
+				Thread.sleep((int)(5_000));
 			} catch(InterruptedException | AuthenticationException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -34,7 +33,8 @@ public class Main extends Reddit5J {
 						|| (((HttpStatusException) e).getStatusCode() == 429))
 					continue;
 
-				e.printStackTrace();
+				System.err.println(e.getMessage());
+				try {Thread.sleep(20_000);} catch (InterruptedException e1) {}
 			}
 		}
 	}

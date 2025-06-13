@@ -20,7 +20,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <release>23</release>
+          <release>21</release>
         </configuration>
       </plugin>
     </plugins>
@@ -33,9 +33,9 @@
   </repositories>
   <dependencies>
 	<dependency>
-      <groupId>com.github.masecla22</groupId>
+      <groupId>com.github.smurflurf</groupId>
       <artifactId>Reddit4J</artifactId>
-      <version>master-SNAPSHOT</version>
+      <version>6d97504499</version>
     </dependency>
     <dependency>
 	  <groupId>com.google.code.gson</groupId>

@@ -8,11 +8,9 @@ public enum Credentials {
 	
 	GEMINI_API_KEY("xxx"),
 	
-	SCOPE("identity edit history mysubreddits privatemessages read submit vote"),
-	
 	APPNAME("pixel-zaehl-boter"),
 	AUTHOR("Simon"),
-	VERSION("2.0");
+	VERSION("3.0");
 	
 	
 	String string;

@@ -2,7 +2,7 @@ package responses.posttypes;
 
 import java.util.SplittableRandom;
 
-import client.Reddit5J;
+import client.ClientHandler;
 import masecla.reddit4j.objects.RedditComment;
 import responses.keywords.KeywordAnalyser;
 
@@ -32,7 +32,7 @@ public class NotSupportedResponse {
 		
 		String reply = "  \n" + KeywordAnalyser.build(parent, sb.toString());
 		
-		Reddit5J.comment(parent, reply);
+		ClientHandler.getClient().comment(parent, reply);
 	}
 	
 	public enum NotSupported {

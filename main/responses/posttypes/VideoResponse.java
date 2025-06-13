@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import client.Reddit5J;
+import client.ClientHandler;
 import data.RedditVideo;
 import masecla.reddit4j.objects.RedditComment;
 import responses.keywords.KeywordAnalyser;
@@ -16,7 +16,7 @@ public class VideoResponse {
 		String reply = lookAtBandwidth(parent, video, isLink);
 		reply += "  \n" + KeywordAnalyser.build(parent);
 		
-		Reddit5J.comment(parent, reply);
+		ClientHandler.getClient().comment(parent, reply);
 	}
 	
 	static String lookAtBandwidth(RedditComment parent, RedditVideo video, boolean isLink) {
